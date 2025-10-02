@@ -99,32 +99,45 @@ class NotionFolders {
 
         console.log('📌 Injecting folders section into sidebar');
 
-        // Find the Private section to insert after it
-        const privateSections = Array.from(sidebar.querySelectorAll('[class*="section"]'));
-        let insertAfter = null;
+        // Find the "Shared" section to insert our Folders section BEFORE it
+        // This will place Folders at the top, above both Shared and Private
+        let insertBefore = null;
 
-        // Try to find a good insertion point (after Private, before Settings)
-        for (let section of privateSections) {
-            const text = section.textContent.toLowerCase();
-            if (text.includes('private') || text.includes('shared')) {
-                insertAfter = section.parentElement || section;
+        // Look for elements that might be the Shared section
+        const allElements = Array.from(sidebar.querySelectorAll('*'));
+
+        for (let element of allElements) {
+            const text = element.textContent?.trim().toLowerCase();
+            // Look for "Shared" header specifically
+            if (text === 'shared' && element.tagName === 'DIV') {
+                // This is the Shared header
+                insertBefore = element.closest('[class*="section"]') || element.parentElement;
+                console.log('✅ Found Shared section, will insert before it');
+                break;
             }
         }
 
-        // If we can't find a good spot, insert at the beginning of sidebar
-        if (!insertAfter) {
-            insertAfter = sidebar.querySelector('[class*="scroller"]') || sidebar.firstChild;
+        // If we can't find Shared, look for Private
+        if (!insertBefore) {
+            for (let element of allElements) {
+                const text = element.textContent?.trim().toLowerCase();
+                if (text === 'private' && element.tagName === 'DIV') {
+                    insertBefore = element.closest('[class*="section"]') || element.parentElement;
+                    console.log('✅ Found Private section, will insert before it');
+                    break;
+                }
+            }
         }
 
         // Create folder section
         const folderSection = this.createFolderSection();
 
-        if (insertAfter && insertAfter.nextSibling) {
-            insertAfter.parentNode.insertBefore(folderSection, insertAfter.nextSibling);
-        } else if (insertAfter) {
-            insertAfter.parentNode.appendChild(folderSection);
+        if (insertBefore) {
+            insertBefore.parentNode.insertBefore(folderSection, insertBefore);
         } else {
-            sidebar.appendChild(folderSection);
+            // Fallback: prepend to sidebar
+            const scroller = sidebar.querySelector('[class*="scroller"]') || sidebar;
+            scroller.insertBefore(folderSection, scroller.firstChild);
         }
 
         // Render folders AFTER the section is in the DOM
@@ -147,14 +160,6 @@ class NotionFolders {
         const headerContent = document.createElement('div');
         headerContent.className = 'notion-folders-header-content';
 
-        const chevron = document.createElement('div');
-        chevron.className = 'notion-folders-chevron';
-        chevron.innerHTML = `
-      <svg viewBox="0 0 100 100" class="chevronDownRounded" style="width: 12px; height: 12px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
-        <polygon points="5.9,23.1 50,67.2 94.1,23.1 100,29 50,79 0,29"></polygon>
-      </svg>
-    `;
-
         const title = document.createElement('div');
         title.className = 'notion-folders-title';
         title.textContent = 'Folders';
@@ -172,7 +177,6 @@ class NotionFolders {
             this.createNewFolder();
         });
 
-        headerContent.appendChild(chevron);
         headerContent.appendChild(title);
         header.appendChild(headerContent);
         header.appendChild(addButton);
@@ -184,27 +188,7 @@ class NotionFolders {
         section.appendChild(header);
         section.appendChild(folderList);
 
-        // Store expansion state
-        const storageKey = 'notion-folders-expanded';
-        let isExpanded = localStorage.getItem(storageKey) !== 'false'; // Default true
-
-        // Set initial state
-        folderList.style.display = isExpanded ? 'block' : 'none';
-        chevron.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)';
-
-        // Toggle expansion
-        header.addEventListener('click', () => {
-            isExpanded = !isExpanded;
-            folderList.style.display = isExpanded ? 'block' : 'none';
-            chevron.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)';
-            localStorage.setItem(storageKey, isExpanded);
-
-            // Re-render when expanding to ensure content is up to date
-            if (isExpanded) {
-                console.log('📂 Expanding folders, re-rendering...');
-                this.renderFolders();
-            }
-        });
+        // No collapse/expand functionality - always visible like Shared/Private
 
         // DON'T render here - will be done after section is added to DOM
 
@@ -305,11 +289,6 @@ class NotionFolders {
                 const pageElement = this.createPageElement(page);
                 pagesList.appendChild(pageElement);
             });
-        } else {
-            const emptyState = document.createElement('div');
-            emptyState.className = 'notion-folder-empty';
-            emptyState.textContent = 'Drag pages here';
-            pagesList.appendChild(emptyState);
         }
 
         folderDiv.appendChild(folderHeader);
