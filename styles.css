@@ -1,0 +1,489 @@
+/* Notion Folders - Styles matching Notion's design system */
+
+.notion-folders-container {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+.notion-folders-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 14px;
+    margin: 1px 0;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 20ms ease-in 0s;
+}
+
+.notion-folders-header:hover {
+    background: rgba(55, 53, 47, 0.08);
+}
+
+.dark .notion-folders-header:hover {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.notion-folders-header-content {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+
+.notion-folders-chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    transition: transform 200ms ease-out 0s;
+    flex-shrink: 0;
+}
+
+.dark .notion-folders-chevron svg {
+    fill: rgba(255, 255, 255, 0.443) !important;
+}
+
+.notion-folders-title {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: rgba(55, 53, 47, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark .notion-folders-title {
+    color: rgba(255, 255, 255, 0.443);
+}
+
+.notion-folders-add-btn {
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 20ms ease-in 0s;
+}
+
+.notion-folders-header:hover .notion-folders-add-btn {
+    opacity: 1;
+}
+
+.notion-folders-add-btn:hover {
+    background: rgba(55, 53, 47, 0.08);
+}
+
+.dark .notion-folders-add-btn:hover {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.dark .notion-folders-add-btn svg {
+    fill: rgba(255, 255, 255, 0.443) !important;
+}
+
+.notion-folders-list {
+    display: block;
+    padding-left: 0;
+    margin: 0;
+}
+
+/* Folder Item */
+.notion-folder-item {
+    margin: 1px 0;
+}
+
+.notion-folder-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 14px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 20ms ease-in 0s;
+    position: relative;
+}
+
+.notion-folder-header:hover {
+    background: rgba(55, 53, 47, 0.08);
+}
+
+.dark .notion-folder-header:hover {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.notion-folder-chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    transition: transform 200ms ease-out 0s;
+    flex-shrink: 0;
+}
+
+.dark .notion-folder-chevron svg {
+    fill: rgba(255, 255, 255, 0.282) !important;
+}
+
+.notion-folder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.dark .notion-folder-icon svg {
+    fill: rgba(255, 255, 255, 0.443) !important;
+}
+
+.notion-folder-name {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(55, 53, 47);
+    padding: 0;
+    margin: 0;
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    cursor: pointer;
+}
+
+.dark .notion-folder-name {
+    color: rgba(255, 255, 255, 0.81);
+}
+
+.notion-folder-name:focus {
+    cursor: text;
+}
+
+.notion-folder-actions {
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.notion-folder-header:hover .notion-folder-actions {
+    opacity: 1;
+}
+
+.notion-folder-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 20ms ease-in 0s;
+}
+
+.notion-folder-delete:hover {
+    background: rgba(55, 53, 47, 0.08);
+}
+
+.dark .notion-folder-delete:hover {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.dark .notion-folder-delete svg {
+    fill: rgba(255, 255, 255, 0.443) !important;
+}
+
+/* Folder Pages */
+.notion-folder-pages {
+    padding-left: 24px;
+    margin: 0;
+    min-height: 32px;
+    transition: all 150ms ease-in 0s;
+    border-radius: 3px;
+    position: relative;
+}
+
+.notion-folder-pages.drag-over {
+    background: rgba(46, 170, 220, 0.15);
+    border: 2px dashed rgb(46, 170, 220);
+    padding-left: 22px;
+    /* Adjust for border */
+    min-height: 40px;
+}
+
+.dark .notion-folder-pages.drag-over {
+    background: rgba(46, 170, 220, 0.2);
+    border-color: rgba(46, 170, 220, 0.8);
+}
+
+.notion-folder-pages.drag-over::after {
+    content: "Drop page here";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: rgb(46, 170, 220);
+    font-weight: 500;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.dark .notion-folder-pages.drag-over::after {
+    color: rgba(46, 170, 220, 0.9);
+}
+
+.notion-folder-empty {
+    font-size: 12px;
+    line-height: 20px;
+    color: rgba(55, 53, 47, 0.4);
+    padding: 4px 14px;
+    font-style: italic;
+    transition: opacity 150ms ease;
+}
+
+.dark .notion-folder-empty {
+    color: rgba(255, 255, 255, 0.282);
+}
+
+.notion-folder-pages.drag-over .notion-folder-empty {
+    opacity: 0;
+}
+
+/* Page Item */
+.notion-folder-page {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    margin: 1px 0;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 20ms ease-in 0s;
+    position: relative;
+}
+
+.notion-folder-page:hover {
+    background: rgba(55, 53, 47, 0.08);
+}
+
+.dark .notion-folder-page:hover {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.notion-page-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.dark .notion-page-icon svg {
+    fill: rgba(255, 255, 255, 0.443) !important;
+}
+
+.notion-page-name {
+    flex: 1;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(55, 53, 47);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark .notion-page-name {
+    color: rgba(255, 255, 255, 0.81);
+}
+
+.notion-page-remove {
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 20ms ease-in 0s;
+}
+
+.notion-folder-page:hover .notion-page-remove {
+    opacity: 1;
+}
+
+.notion-page-remove:hover {
+    background: rgba(55, 53, 47, 0.08);
+}
+
+.dark .notion-page-remove:hover {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.dark .notion-page-remove svg {
+    fill: rgba(255, 255, 255, 0.443) !important;
+}
+
+/* Context Menu */
+.notion-folders-context-menu {
+    position: fixed;
+    z-index: 10000;
+}
+
+.notion-folders-context-menu-content {
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.176), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    min-width: 200px;
+    max-width: 300px;
+    padding: 6px;
+    animation: contextMenuFadeIn 150ms ease-out;
+}
+
+.dark .notion-folders-context-menu-content {
+    background: #2f2f2f;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.notion-folders-context-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(55, 53, 47, 0.65);
+    border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+    margin-bottom: 4px;
+}
+
+.dark .notion-folders-context-header {
+    color: rgba(255, 255, 255, 0.65);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+}
+
+.notion-folders-context-header svg {
+    fill: rgba(55, 53, 47, 0.65);
+    flex-shrink: 0;
+}
+
+.dark .notion-folders-context-header svg {
+    fill: rgba(255, 255, 255, 0.65);
+}
+
+.notion-folders-context-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notion-folders-context-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    color: rgb(55, 53, 47);
+    transition: background-color 20ms ease-in 0s;
+}
+
+.notion-folders-context-item:hover {
+    background: rgba(55, 53, 47, 0.08);
+}
+
+.dark .notion-folders-context-item {
+    color: rgba(255, 255, 255, 0.81);
+}
+
+.dark .notion-folders-context-item:hover {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.notion-folders-context-item svg {
+    fill: rgba(55, 53, 47, 0.45);
+    flex-shrink: 0;
+}
+
+.dark .notion-folders-context-item svg {
+    fill: rgba(255, 255, 255, 0.443);
+}
+
+.notion-folders-context-empty {
+    padding: 12px 10px;
+    font-size: 13px;
+    color: rgba(55, 53, 47, 0.4);
+    font-style: italic;
+    text-align: center;
+}
+
+.dark .notion-folders-context-empty {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Toast Notification */
+.notion-folders-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    opacity: 0;
+    transition: all 300ms ease-out;
+    max-width: 400px;
+    text-align: center;
+}
+
+.notion-folders-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.dark .notion-folders-toast {
+    background: rgba(255, 255, 255, 0.9);
+    color: rgb(55, 53, 47);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes contextMenuFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.notion-folder-item {
+    animation: fadeIn 200ms ease-out;
+}

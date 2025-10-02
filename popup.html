@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notion Folders</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 320px;
+      padding: 20px;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif;
+      background: #fff;
+      color: rgb(55, 53, 47);
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(55, 53, 47, 0.65);
+      margin-bottom: 16px;
+    }
+
+    .stats {
+      background: rgba(46, 170, 220, 0.08);
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .stat-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .stat-label {
+      color: rgba(55, 53, 47, 0.65);
+    }
+
+    .stat-value {
+      font-weight: 600;
+      color: rgb(46, 170, 220);
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 150ms ease;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: rgb(46, 170, 220);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: rgb(36, 150, 200);
+    }
+
+    .btn-secondary {
+      background: rgba(55, 53, 47, 0.08);
+      color: rgb(55, 53, 47);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(55, 53, 47, 0.12);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(55, 53, 47, 0.09);
+      font-size: 12px;
+      color: rgba(55, 53, 47, 0.45);
+      text-align: center;
+    }
+
+    a {
+      color: rgb(46, 170, 220);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    <svg class="icon" viewBox="0 0 14 14" fill="rgb(46, 170, 220)">
+      <path d="M6.762 0c.213 0 .397.102.52.265l.813 1.123h4.609C13.423 1.388 14 1.952 14 2.647v9.059c0 .695-.577 1.294-1.296 1.294H1.296C.578 13 0 12.401 0 11.706V1.294C0 .599.578 0 1.296 0zm0 0"/>
+    </svg>
+    Notion Folders
+  </h1>
+  
+  <p>Organize your Notion pages with custom folders in the sidebar.</p>
+
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-label">Total Folders:</span>
+      <span class="stat-value" id="folder-count">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Total Pages:</span>
+      <span class="stat-value" id="page-count">0</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-primary" id="refresh-btn">Refresh Extension</button>
+    <button class="btn-secondary" id="export-btn">Export Folders</button>
+    <button class="btn-secondary" id="import-btn">Import Folders</button>
+  </div>
+
+  <div class="footer">
+    <p>Version 1.0.0</p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+
