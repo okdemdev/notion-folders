@@ -94,9 +94,8 @@
 .notion-folder-header {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     padding: 2px 14px;
-    cursor: pointer;
     border-radius: 3px;
     transition: background-color 20ms ease-in 0s;
     position: relative;
@@ -109,27 +108,6 @@
 
 .dark .notion-folder-header:hover {
     background: rgba(255, 255, 255, 0.055);
-}
-
-.notion-folder-chevron {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 10px;
-    height: 10px;
-    margin-right: -2px;
-    transition: transform 200ms ease-out 0s;
-    flex-shrink: 0;
-}
-
-.notion-folder-chevron svg {
-    width: 10px;
-    height: 10px;
-    fill: rgba(55, 53, 47, 0.35) !important;
-}
-
-.dark .notion-folder-chevron svg {
-    fill: rgba(255, 255, 255, 0.282) !important;
 }
 
 .notion-folder-icon {

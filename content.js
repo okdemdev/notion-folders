@@ -222,14 +222,6 @@ class NotionFolders {
         const folderHeader = document.createElement('div');
         folderHeader.className = 'notion-folder-header';
 
-        const chevron = document.createElement('div');
-        chevron.className = 'notion-folder-chevron';
-        chevron.innerHTML = `
-      <svg viewBox="0 0 100 100" style="width: 12px; height: 12px; display: block; fill: rgba(55, 53, 47, 0.35);">
-        <polygon points="5.9,23.1 50,67.2 94.1,23.1 100,29 50,79 0,29"></polygon>
-      </svg>
-    `;
-
         const icon = document.createElement('div');
         icon.className = 'notion-folder-icon';
         icon.innerHTML = `
@@ -274,7 +266,6 @@ class NotionFolders {
 
         actions.appendChild(deleteBtn);
 
-        folderHeader.appendChild(chevron);
         folderHeader.appendChild(icon);
         folderHeader.appendChild(nameInput);
         folderHeader.appendChild(actions);
@@ -283,7 +274,7 @@ class NotionFolders {
         pagesList.className = 'notion-folder-pages';
         pagesList.dataset.folderId = folderId;
 
-        // Render pages in folder
+        // Render pages in folder - always visible, no collapse
         if (folder.pages && folder.pages.length > 0) {
             folder.pages.forEach(page => {
                 const pageElement = this.createPageElement(page);
@@ -293,15 +284,6 @@ class NotionFolders {
 
         folderDiv.appendChild(folderHeader);
         folderDiv.appendChild(pagesList);
-
-        // Toggle expansion
-        let isExpanded = true;
-        chevron.addEventListener('click', (e) => {
-            e.stopPropagation();
-            isExpanded = !isExpanded;
-            pagesList.style.display = isExpanded ? 'block' : 'none';
-            chevron.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)';
-        });
 
         return folderDiv;
     }
