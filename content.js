@@ -17,6 +17,14 @@ class NotionFolders {
         return new Promise((resolve) => {
             chrome.storage.sync.get(['notionFolders'], (result) => {
                 this.folders = result.notionFolders || {};
+
+                // Ensure all folders have isExpanded property
+                Object.keys(this.folders).forEach(folderId => {
+                    if (this.folders[folderId].isExpanded === undefined) {
+                        this.folders[folderId].isExpanded = true;
+                    }
+                });
+
                 console.log('📥 Loaded folders from storage:', Object.keys(this.folders).length, 'folders');
                 resolve();
             });
@@ -157,29 +165,11 @@ class NotionFolders {
         const header = document.createElement('div');
         header.className = 'notion-folders-header';
 
-        const headerContent = document.createElement('div');
-        headerContent.className = 'notion-folders-header-content';
-
         const title = document.createElement('div');
         title.className = 'notion-folders-title';
-        title.textContent = 'Folders';
+        title.textContent = 'FOLDERS';
 
-        const addButton = document.createElement('div');
-        addButton.className = 'notion-folders-add-btn';
-        addButton.innerHTML = `
-      <svg viewBox="0 0 16 16" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45);">
-        <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path>
-      </svg>
-    `;
-        addButton.title = 'Add folder';
-        addButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.createNewFolder();
-        });
-
-        headerContent.appendChild(title);
-        header.appendChild(headerContent);
-        header.appendChild(addButton);
+        header.appendChild(title);
 
         const folderList = document.createElement('div');
         folderList.className = 'notion-folders-list';
@@ -212,6 +202,23 @@ class NotionFolders {
             const folderElement = this.createFolderElement(folderId, folder);
             folderList.appendChild(folderElement);
         });
+
+        // Add the "+ Add new folder" button at the bottom
+        const addButton = document.createElement('div');
+        addButton.className = 'notion-folders-add-btn';
+        addButton.innerHTML = `
+      <svg viewBox="0 0 16 16" style="width: 16px; height: 16px; display: block;">
+        <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path>
+      </svg>
+      <span>Add new folder</span>
+    `;
+        addButton.title = 'Add new folder';
+        addButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.createNewFolder();
+        });
+
+        folderList.appendChild(addButton);
     }
 
     createFolderElement(folderId, folder) {
@@ -221,6 +228,19 @@ class NotionFolders {
 
         const folderHeader = document.createElement('div');
         folderHeader.className = 'notion-folder-header';
+        folderHeader.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleFolderCollapse(folderId);
+        });
+
+        // Chevron icon
+        const chevron = document.createElement('div');
+        chevron.className = `notion-folder-chevron ${folder.isExpanded ? 'expanded' : ''}`;
+        chevron.innerHTML = `
+      <svg viewBox="0 0 16 16" style="width: 12px; height: 12px; display: block;">
+        <path d="M5.75781 3.25781C5.91406 3.10156 6.17188 3.10156 6.32812 3.25781L10.3281 7.25781C10.4844 7.41406 10.4844 7.67188 10.3281 7.82812L6.32812 11.8281C6.17188 11.9844 5.91406 11.9844 5.75781 11.8281C5.60156 11.6719 5.60156 11.4141 5.75781 11.2578L9.44531 7.54688L5.75781 3.83594C5.60156 3.67969 5.60156 3.42188 5.75781 3.25781Z"/>
+      </svg>
+    `;
 
         const icon = document.createElement('div');
         icon.className = 'notion-folder-icon';
@@ -230,19 +250,9 @@ class NotionFolders {
       </svg>
     `;
 
-        const nameInput = document.createElement('input');
-        nameInput.className = 'notion-folder-name';
-        nameInput.type = 'text';
-        nameInput.value = folder.name || 'Untitled';
-        nameInput.addEventListener('blur', () => {
-            folder.name = nameInput.value;
-            this.saveFolders();
-        });
-        nameInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                nameInput.blur();
-            }
-        });
+        const name = document.createElement('div');
+        name.className = 'notion-folder-name';
+        name.textContent = folder.name || 'Untitled';
 
         const actions = document.createElement('div');
         actions.className = 'notion-folder-actions';
@@ -266,15 +276,16 @@ class NotionFolders {
 
         actions.appendChild(deleteBtn);
 
+        folderHeader.appendChild(chevron);
         folderHeader.appendChild(icon);
-        folderHeader.appendChild(nameInput);
+        folderHeader.appendChild(name);
         folderHeader.appendChild(actions);
 
         const pagesList = document.createElement('div');
-        pagesList.className = 'notion-folder-pages';
+        pagesList.className = `notion-folder-pages ${folder.isExpanded ? '' : 'collapsed'}`;
         pagesList.dataset.folderId = folderId;
 
-        // Render pages in folder - always visible, no collapse
+        // Render pages in folder
         if (folder.pages && folder.pages.length > 0) {
             folder.pages.forEach(page => {
                 const pageElement = this.createPageElement(page);
@@ -338,7 +349,8 @@ class NotionFolders {
         this.folders[folderId] = {
             name: 'New Folder',
             pages: [],
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            isExpanded: true
         };
 
         console.log('➕ Creating new folder:', folderId);
@@ -887,6 +899,21 @@ class NotionFolders {
         } else {
             console.log('ℹ️ Page already in folder:', pageData.name);
         }
+    }
+
+    toggleFolderCollapse(folderId) {
+        const folder = this.folders[folderId];
+        if (!folder) {
+            console.error('❌ Folder not found:', folderId);
+            return;
+        }
+
+        folder.isExpanded = !folder.isExpanded;
+        console.log('🔄 Toggling folder collapse:', folder.name, '→', folder.isExpanded ? 'expanded' : 'collapsed');
+
+        this.saveFolders().then(() => {
+            this.renderFolders();
+        });
     }
 }
 
